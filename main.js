@@ -2,33 +2,57 @@ const emailMenu = document.querySelector('.navbar-email');
 const desktopMenu = document.querySelector('.desktop-menu');
 const mobileMenu = document.querySelector('.menu');
 const burgerMenu = document.querySelector('.mobile-menu');
+
 const shoppingCar = document.querySelector('.navbar-shopping-cart');
-const shoppingCarAside = document.querySelector('.product-detail');
+const shoppingCarAside = document.querySelector('#shopping-cart');
+
 const cardsCointainer = document.querySelector('.cards-container');
 
-const toggleDesktopMenu = () => {
-  const isShoppingCarOpen = shoppingCarAside.classList.contains('show-product-detail');
+const productDetailAside = document.querySelector('#product-detail');
+const closeProductDetail = document.querySelector('.product-detail-close');
 
-  if (isShoppingCarOpen) shoppingCarAside.classList.remove('show-product-detail');
+const onToggleDesktopMenu = () => {
+  const isShoppingCarOpen = shoppingCarAside.classList.contains('show-aside');
+  const isProductDetailOpen = productDetailAside.classList.contains('show-aside');
+
+  if (isShoppingCarOpen) shoppingCarAside.classList.remove('show-aside');
+  if (isProductDetailOpen) productDetailAside.classList.remove('show-aside');
   desktopMenu.classList.toggle('show-desktop-menu');
 }
 
-const toggleMobileMenu = () => {
-  const isShoppingCarOpen = shoppingCarAside.classList.contains('show-product-detail');
+const onToggleMobileMenu = () => {
+  const isShoppingCarOpen = shoppingCarAside.classList.contains('show-aside');
   const isDesktopMenuOpen = desktopMenu.classList.contains('show-desktop-menu');
+  const isProductDetailOpen = productDetailAside.classList.contains('show-aside');
 
-  if (isShoppingCarOpen) shoppingCarAside.classList.remove('show-product-detail');
+  if (isShoppingCarOpen) shoppingCarAside.classList.remove('show-aside');
   if (isDesktopMenuOpen) desktopMenu.classList.remove('show-desktop-menu');
+  if (isProductDetailOpen) productDetailAside.classList.remove('show-aside');
   burgerMenu.classList.toggle('show-burger-menu');
 };
 
-const toggleShoppingCar = () => {
+const onToggleShoppingCar = () => {
   const isMobileMenuOpen = burgerMenu.classList.contains('show-burger-menu');
   const isDesktopMenuOpen = desktopMenu.classList.contains('show-desktop-menu');
+  const isProductDetailOpen = productDetailAside.classList.contains('show-aside');
 
   if (isMobileMenuOpen) burgerMenu.classList.remove('show-burger-menu');
   if (isDesktopMenuOpen) desktopMenu.classList.remove('show-desktop-menu');
-  shoppingCarAside.classList.toggle('show-product-detail');
+  if (isProductDetailOpen) productDetailAside.classList.remove('show-aside');
+  shoppingCarAside.classList.toggle('show-aside');
+};
+
+const onOpenProductDetail = () => {
+  const isShoppingCarOpen = shoppingCarAside.classList.contains('show-aside');
+  const isDesktopMenuOpen = desktopMenu.classList.contains('show-desktop-menu');
+
+  if (isShoppingCarOpen) shoppingCarAside.classList.remove('show-aside');
+  if (isDesktopMenuOpen) desktopMenu.classList.remove('show-desktop-menu');
+  productDetailAside.classList.add('show-aside');
+};
+
+const onCloseProductDetail = () => {
+  productDetailAside.classList.remove('show-aside');
 };
 
 const renderProducts = product => {
@@ -38,6 +62,7 @@ const renderProducts = product => {
     
     const productImg = document.createElement('img');
     productImg.setAttribute('src', item.image);
+    productImg.addEventListener('click', onOpenProductDetail)
   
     const productInfo = document.createElement('div');
     productInfo.classList.add('product-info');
@@ -64,9 +89,10 @@ const renderProducts = product => {
   });
 };
 
-emailMenu.addEventListener('click', toggleDesktopMenu);
-mobileMenu.addEventListener('click', toggleMobileMenu);
-shoppingCar.addEventListener('click', toggleShoppingCar);
+emailMenu.addEventListener('click', onToggleDesktopMenu);
+mobileMenu.addEventListener('click', onToggleMobileMenu);
+shoppingCar.addEventListener('click', onToggleShoppingCar);
+closeProductDetail.addEventListener('click', onCloseProductDetail);
 
 const productList = [];
 productList.push({
